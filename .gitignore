@@ -1,3 +1,6 @@
+# Secrets
+arduino_secrets.h
+
 # Logs
 logs
 *.log
