@@ -1,10 +1,18 @@
 #include "arduino_secrets.h"
 
+#define DEBUG true
+
 #define LED D0            // Led in NodeMCU at pin GPIO16 (D0).
 void setup() {
 pinMode(LED, OUTPUT);    // LED pin as output.
+
+#ifdef DEBUG
+Serial.begin(115200);
+#endif
+
 }
 void loop() {
+Serial.print(WIFI_SSID);
 digitalWrite(LED, HIGH);// turn the LED off.(Note that LOW is the voltage level but actually 
                         //the LED is on; this is because it is acive low on the ESP8266.
 delay(1000);            // wait for 1 second.
