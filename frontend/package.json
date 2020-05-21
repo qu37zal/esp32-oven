@@ -13,7 +13,10 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "chartist": "^0.11.0",
+    "dns": "^0.2.2",
     "es6-promise": "^4.2.4",
+    "module": "^1.2.5",
+    "mongoclient": "^1.0.3",
     "vue": "^2.6.10",
     "vue-clickaway": "^2.1.0",
     "vue-notifyjs": "^0.3.0",

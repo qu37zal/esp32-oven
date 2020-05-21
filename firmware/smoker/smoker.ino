@@ -1,5 +1,9 @@
 #include "arduino_secrets.h"
+#include <Arduino_JSON.h>
 #include <math.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
 
 #define DEBUG true
 #define LED D0            // Led in NodeMCU at pin GPIO16 (D0).
@@ -7,8 +11,13 @@
 #define MUX_B D2
 #define MUX_C D1
 
-#include <LiquidCrystal_I2C.h>
+const char* ssid = "AIONEX-2.4";
+const char* password = "aionex2017";
 
+const char* serverName = "http://10.1.10.166:8080/update";
+
+
+#include <LiquidCrystal_I2C.h>
 // Set the LCD address to 0x27 for a 20 chars and 4 line display
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
@@ -20,6 +29,17 @@ void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
   #endif
+
+  WiFi.begin(ssid, password);
+  Serial.println();
+  Serial.println("Connecting");
+  while(WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("Connected to WiFi network with IP Address: ");
+  Serial.println(WiFi.localIP());
 }
 
 int AnalogRead(int a, int b, int c) {
@@ -82,50 +102,58 @@ double Thermister(int adc_value) {
 
 void loop() {  
   char outBuf[20];
+  char jsonBuf[1024];
   int adc_value;
-  double rt_value;
+  double rt_value[8];
   
   // Serial.print(WIFI_SSID);
   
   adc_value = AnalogRead(LOW, LOW, LOW); // read X0
-  rt_value = Thermister(adc_value);
-  Serial.printf("T0: ");
-  if(rt_value<-60) // no connect
-    Serial.printf("NC");
-  else 
-    Serial.printf("%.1f F", rt_value);
-  Serial.println();
-
+  rt_value[0] = Thermister(adc_value);
   adc_value = AnalogRead(HIGH, LOW, LOW); // read X1
-  rt_value = Thermister(adc_value);
-  Serial.printf("T1: ");
-  if(rt_value<-60) // no connect
-    Serial.printf("NC");
-  else 
-    Serial.printf("%.1f F", rt_value);
-  Serial.println();
-
+  rt_value[1] = Thermister(adc_value);
   adc_value = AnalogRead(LOW, HIGH, LOW); // read X2
-  rt_value = Thermister(adc_value);
-  Serial.printf("T2: ");
-  if(rt_value<-60) // no connect
-    Serial.printf("NC");
-  else 
-    Serial.printf("%.1f F", rt_value);
-  Serial.println();
-
+  rt_value[2] = Thermister(adc_value);
   adc_value = AnalogRead(HIGH, HIGH, LOW); // read X3
-  rt_value = Thermister(adc_value);
-  Serial.printf("T3: ");
-  if(rt_value<-60) // no connect
-    Serial.printf("NC");
-  else 
-    Serial.printf("%.1f F", rt_value);
+  rt_value[3] = Thermister(adc_value);
+  adc_value = AnalogRead(LOW, LOW, HIGH); // read X4
+  rt_value[4] = Thermister(adc_value);
+  adc_value = AnalogRead(HIGH, LOW, HIGH); // read X5
+  rt_value[5] = Thermister(adc_value);
+  adc_value = AnalogRead(LOW, HIGH, HIGH); // read X6
+  rt_value[6] = Thermister(adc_value);
+  adc_value = AnalogRead(HIGH, HIGH, HIGH); // read X7
+  rt_value[7] = Thermister(adc_value);
+
+  // create JSON packet
+  sprintf(jsonBuf,"{\"api_key\":\"tPmAT5Ab3j7F9\",\"t0\":%f,\"t1\":%f,\"t2\":%f,\"t3\":%f,\"t4\":%f,\"t5\":%f,\"t6\":%f,\"t7\":%f}",
+  rt_value[0],
+  rt_value[1],
+  rt_value[2],
+  rt_value[3],
+  rt_value[4],
+  rt_value[5],
+  rt_value[6],
+  rt_value[7]);
+  
+  Serial.printf("%s",jsonBuf);
   Serial.println();
 
-  Serial.println();
-  
+  if(WiFi.status()== WL_CONNECTED) {
+    HTTPClient http;
+    // Your Domain name with URL path or IP address with path
+    http.begin(serverName);
+
+    // If you need an HTTP request with a content type: application/json, use the following:
+    http.addHeader("Content-Type", "application/json");
+    int httpResponseCode = http.POST(jsonBuf);
+   
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    http.end();
+  }
+      
   // sleep 
-  delay(1000);
+  delay(60000);
 
 }
