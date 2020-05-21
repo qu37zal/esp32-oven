@@ -31,9 +31,10 @@
             <i class="ti-reload"></i> Updated 3 minutes ago
           </span>
           <div slot="legend">
-            <i class="fa fa-circle text-info"></i> Probe 1
-            <i class="fa fa-circle text-danger"></i> Probe 2
-            <i class="fa fa-circle text-warning"></i> Probe 3
+            <i class="fa fa-circle text-info"></i> P01
+            <i class="fa fa-circle text-danger"></i> P02
+            <i class="fa fa-circle text-warning"></i> P03
+            <i class="fa fa-circle text-warning"></i> P04
           </div>
         </chart-card>
       </div>
@@ -89,7 +90,7 @@ export default {
         {
           type: "success",
           icon: "ti-dashboard",
-          title: "Chamber Temp",
+          title: "P00 (Chamber)",
           value: "215.12 °F",
           footerText: "Updated now",
           footerIcon: "ti-reload"
@@ -126,15 +127,16 @@ export default {
             "6:00AM"
           ],
           series: [
-            [287, 385, 490, 562, 594, 626, 698, 895, 952],
-            [67, 152, 193, 240, 387, 435, 535, 642, 744],
-            [23, 113, 67, 108, 190, 239, 307, 410, 410]
+            [110, 135, 182, 197, 203, 215, 216, 215, 214],
+            [70, 72, 90, 162, 194, 126, 198, 195, 152],
+            [71, 78, 93, 140, 187, 135, 135, 142, 144],
+            [45, 48, 67, 148, 190, 139, 137, 110, 110],
           ]
         },
         options: {
           low: 0,
-          high: 1000,
-          showArea: true,
+          high: 350,
+          showArea: false,
           height: "245px",
           axisX: {
             showGrid: false
