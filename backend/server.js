@@ -1,9 +1,11 @@
 // index.js
 const express = require('express');
 const bodyParser = require('body-parser');
+var cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
