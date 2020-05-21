@@ -7,19 +7,15 @@
 #define MUX_B D2
 #define MUX_C D1
 
-
-
-//#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_I2C.h>
 
 // Set the LCD address to 0x27 for a 20 chars and 4 line display
-//LiquidCrystal_I2C lcd(0x27, 20, 4);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 void setup() {
   pinMode(MUX_A, OUTPUT);    // multiplexer A
   pinMode(MUX_B, OUTPUT);    // mulitplexer B
   pinMode(MUX_C, OUTPUT);    // multiplexer C
-
-  //Wire.begin();
 
   #ifdef DEBUG
     Serial.begin(115200);
@@ -85,32 +81,48 @@ double Thermister(int adc_value) {
 }
 
 void loop() {  
+  char outBuf[20];
+  int adc_value;
+  double rt_value;
+  
   // Serial.print(WIFI_SSID);
   
-  int adc_value = AnalogRead(LOW, LOW, LOW); // read X0
-  
-  double V_NTC = (adc_value * VCC) / adc_resolution;
-  // V_NTC = V_NTC + .132; // calibration for sloppy input
-  double R_NTC = (VCC * R2 / V_NTC) - R2;
-  double t = Thermister(adc_value);
-  char outBuf[20];
- 
-  //Serial.printf("R0: %-10.1f",R_NTC);
-  //Serial.println();
-  Serial.printf("T0: %-10.1fF", t);
+  adc_value = AnalogRead(LOW, LOW, LOW); // read X0
+  rt_value = Thermister(adc_value);
+  Serial.printf("T0: ");
+  if(rt_value<-60) // no connect
+    Serial.printf("NC");
+  else 
+    Serial.printf("%.1f F", rt_value);
   Serial.println();
 
   adc_value = AnalogRead(HIGH, LOW, LOW); // read X1
-  
-  V_NTC = (adc_value * VCC) / adc_resolution;
-  // V_NTC = V_NTC + .132; // calibration for sloppy input
-  R_NTC = (VCC * R2 / V_NTC) - R2;
-  t = Thermister(adc_value);
-   
-  //Serial.printf("R1: %-10.1f",R_NTC);
-  //Serial.println();
-  Serial.printf("T1: %-10.1fF", t);
+  rt_value = Thermister(adc_value);
+  Serial.printf("T1: ");
+  if(rt_value<-60) // no connect
+    Serial.printf("NC");
+  else 
+    Serial.printf("%.1f F", rt_value);
   Serial.println();
+
+  adc_value = AnalogRead(LOW, HIGH, LOW); // read X2
+  rt_value = Thermister(adc_value);
+  Serial.printf("T2: ");
+  if(rt_value<-60) // no connect
+    Serial.printf("NC");
+  else 
+    Serial.printf("%.1f F", rt_value);
+  Serial.println();
+
+  adc_value = AnalogRead(HIGH, HIGH, LOW); // read X3
+  rt_value = Thermister(adc_value);
+  Serial.printf("T3: ");
+  if(rt_value<-60) // no connect
+    Serial.printf("NC");
+  else 
+    Serial.printf("%.1f F", rt_value);
+  Serial.println();
+
   Serial.println();
   
   // sleep 

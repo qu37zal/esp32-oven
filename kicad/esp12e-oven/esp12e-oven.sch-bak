@@ -69,10 +69,10 @@ F 3 "~" H 3350 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_SPST SW1
+L Switch:SW_SPST RESET
 U 1 1 5EB682FC
 P 2250 3100
-F 0 "SW1" H 2250 3335 50  0000 C CNN
+F 0 "RESET" H 2250 3335 50  0000 C CNN
 F 1 "SW_SPST" H 2250 3244 50  0000 C CNN
 F 2 "Button_Switch_THT:KSA_Tactile_SPST" H 2250 3100 50  0001 C CNN
 F 3 "~" H 2250 3100 50  0001 C CNN
@@ -199,7 +199,7 @@ Wire Wire Line
 Wire Wire Line
 	3100 3500 3100 2650
 Wire Wire Line
-	3100 2650 6300 2650
+	3100 2650 4800 2650
 Wire Wire Line
 	1550 1500 1550 2050
 Connection ~ 1550 4850
@@ -261,44 +261,44 @@ Wire Wire Line
 Wire Wire Line
 	8400 1650 8400 1850
 $Comp
-L Connector_Generic:Conn_01x02 J3
+L Connector_Generic:Conn_01x02 P0
 U 1 1 5EBD2D0B
 P 7500 1000
-F 0 "J3" V 7464 812 50  0000 R CNN
-F 1 "Conn_01x02" V 7373 812 50  0000 R CNN
+F 0 "P0" V 7464 812 50  0000 R CNN
+F 1 "Probe 0" V 7373 812 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 7500 1000 50  0001 C CNN
 F 3 "~" H 7500 1000 50  0001 C CNN
 	1    7500 1000
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J4
+L Connector_Generic:Conn_01x02 P1
 U 1 1 5EBD44E0
 P 7500 1450
-F 0 "J4" V 7464 1262 50  0000 R CNN
-F 1 "Conn_01x02" V 7373 1262 50  0000 R CNN
+F 0 "P1" V 7464 1262 50  0000 R CNN
+F 1 "Probe 1" V 7373 1262 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 7500 1450 50  0001 C CNN
 F 3 "~" H 7500 1450 50  0001 C CNN
 	1    7500 1450
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J5
+L Connector_Generic:Conn_01x02 P2
 U 1 1 5EBD4A45
 P 7500 1900
-F 0 "J5" V 7464 1712 50  0000 R CNN
-F 1 "Conn_01x02" V 7373 1712 50  0000 R CNN
+F 0 "P2" V 7464 1712 50  0000 R CNN
+F 1 "Probe 2" V 7373 1712 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 7500 1900 50  0001 C CNN
 F 3 "~" H 7500 1900 50  0001 C CNN
 	1    7500 1900
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J6
+L Connector_Generic:Conn_01x02 P3
 U 1 1 5EBD5059
 P 7500 2350
-F 0 "J6" V 7464 2162 50  0000 R CNN
-F 1 "Conn_01x02" V 7373 2162 50  0000 R CNN
+F 0 "P3" V 7464 2162 50  0000 R CNN
+F 1 "Probe 3" V 7373 2162 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 7500 2350 50  0001 C CNN
 F 3 "~" H 7500 2350 50  0001 C CNN
 	1    7500 2350
@@ -335,11 +335,11 @@ Connection ~ 8400 1850
 Wire Wire Line
 	8400 1850 8400 2100
 $Comp
-L Connector_Generic:Conn_01x03 J7
+L Connector_Generic:Conn_01x03 RELAY0
 U 1 1 5EB5C7DD
 P 8850 4100
-F 0 "J7" H 8930 4092 50  0000 L CNN
-F 1 "Conn_01x03" H 8930 4001 50  0000 L CNN
+F 0 "RELAY0" H 8930 4092 50  0000 L CNN
+F 1 "Relay 0" H 8930 4001 50  0000 L CNN
 F 2 "Connector_PinSocket_2.00mm:PinSocket_1x03_P2.00mm_Horizontal" H 8850 4100 50  0001 C CNN
 F 3 "~" H 8850 4100 50  0001 C CNN
 	1    8850 4100
@@ -381,44 +381,44 @@ Wire Wire Line
 Wire Wire Line
 	6150 4850 8650 4850
 $Comp
-L Connector_Generic:Conn_01x02 J8
+L Connector_Generic:Conn_01x02 P4
 U 1 1 5ECA3B74
 P 9050 2250
-F 0 "J8" V 9014 2062 50  0000 R CNN
-F 1 "Conn_01x02" V 8923 2062 50  0000 R CNN
+F 0 "P4" V 9014 2062 50  0000 R CNN
+F 1 "Probe 4" V 8923 2062 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 9050 2250 50  0001 C CNN
 F 3 "~" H 9050 2250 50  0001 C CNN
 	1    9050 2250
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J9
+L Connector_Generic:Conn_01x02 P5
 U 1 1 5ECA4D62
 P 9050 2650
-F 0 "J9" V 9014 2462 50  0000 R CNN
-F 1 "Conn_01x02" V 8923 2462 50  0000 R CNN
+F 0 "P5" V 9014 2462 50  0000 R CNN
+F 1 "Probe 5" V 8923 2462 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 9050 2650 50  0001 C CNN
 F 3 "~" H 9050 2650 50  0001 C CNN
 	1    9050 2650
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J10
+L Connector_Generic:Conn_01x02 P6
 U 1 1 5ECA573F
 P 9050 3050
-F 0 "J10" V 9014 2862 50  0000 R CNN
-F 1 "Conn_01x02" V 8923 2862 50  0000 R CNN
+F 0 "P6" V 9014 2862 50  0000 R CNN
+F 1 "Probe 6" V 8923 2862 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 9050 3050 50  0001 C CNN
 F 3 "~" H 9050 3050 50  0001 C CNN
 	1    9050 3050
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J11
+L Connector_Generic:Conn_01x02 P7
 U 1 1 5ECA6122
 P 9050 3400
-F 0 "J11" V 9014 3212 50  0000 R CNN
-F 1 "Conn_01x02" V 8923 3212 50  0000 R CNN
+F 0 "P7" V 9014 3212 50  0000 R CNN
+F 1 "Probe 7" V 8923 3212 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x02_P2.00mm_Vertical" H 9050 3400 50  0001 C CNN
 F 3 "~" H 9050 3400 50  0001 C CNN
 	1    9050 3400
@@ -466,11 +466,11 @@ Wire Wire Line
 Wire Wire Line
 	8600 3350 7000 3350
 $Comp
-L Connector_Generic:Conn_01x03 J12
+L Connector_Generic:Conn_01x03 RELAY1
 U 1 1 5ECCCE14
 P 9650 4600
-F 0 "J12" H 9730 4592 50  0000 L CNN
-F 1 "Conn_01x03" H 9730 4501 50  0000 L CNN
+F 0 "RELAY1" H 9730 4592 50  0000 L CNN
+F 1 "Relay 1" H 9730 4501 50  0000 L CNN
 F 2 "Connector_PinSocket_2.00mm:PinSocket_1x03_P2.00mm_Horizontal" H 9650 4600 50  0001 C CNN
 F 3 "~" H 9650 4600 50  0001 C CNN
 	1    9650 4600
@@ -499,7 +499,7 @@ L Connector_Generic:Conn_01x04 J2
 U 1 1 5ECD86F3
 P 5600 5450
 F 0 "J2" V 5564 5262 50  0000 R CNN
-F 1 "Conn_01x04" V 5473 5262 50  0000 R CNN
+F 1 "I2C LCD" V 5473 5262 50  0000 R CNN
 F 2 "Connector_PinHeader_2.00mm:PinHeader_1x04_P2.00mm_Vertical" H 5600 5450 50  0001 C CNN
 F 3 "~" H 5600 5450 50  0001 C CNN
 	1    5600 5450
@@ -526,12 +526,12 @@ Wire Wire Line
 	5500 5100 5500 5250
 Connection ~ 9900 3600
 $Comp
-L Connector:Barrel_Jack_MountingPin J1
+L Connector:Barrel_Jack_MountingPin DC
 U 1 1 5ED2AD57
 P 950 1950
-F 0 "J1" H 1007 2267 50  0000 C CNN
-F 1 "Barrel_Jack_MountingPin" H 1007 2176 50  0000 C CNN
-F 2 "Connector_BarrelJack:BarrelJack_CUI_PJ-063AH_Horizontal_CircularHoles" H 1000 1910 50  0001 C CNN
+F 0 "DC" H 1007 2267 50  0000 C CNN
+F 1 "DC" H 1007 2176 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 1000 1910 50  0001 C CNN
 F 3 "~" H 1000 1910 50  0001 C CNN
 	1    950  1950
 	1    0    0    -1  
@@ -587,5 +587,18 @@ F 2 "MountingHole:MountingHole_2.5mm" H 1100 6000 50  0001 C CNN
 F 3 "~" H 1100 6000 50  0001 C CNN
 	1    1100 6000
 	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 2650 6300 2650
+$Comp
+L Device:R R?
+U 1 1 5EC76026
+P 4950 2650
+F 0 "R?" V 4743 2650 50  0000 C CNN
+F 1 "220K" V 4834 2650 50  0000 C CNN
+F 2 "" V 4880 2650 50  0001 C CNN
+F 3 "~" H 4950 2650 50  0001 C CNN
+	1    4950 2650
+	0    1    1    0   
 $EndComp
 $EndSCHEMATC
