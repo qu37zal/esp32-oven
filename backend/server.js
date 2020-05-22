@@ -29,7 +29,8 @@ app.get('/data', function(req, res) {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("sdb");
-      dbo.collection("samples").find({}).toArray(function(err, result) {
+      var epoch = Math.floor(new Date() / 1000);
+      dbo.collection("samples").find({ epoch: { $gt: epoch - 43200 } }).toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       res.json(result);

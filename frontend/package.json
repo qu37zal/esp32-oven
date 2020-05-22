@@ -20,6 +20,7 @@
     "moment": "^2.26.0",
     "mongoclient": "^1.0.3",
     "vue": "^2.6.10",
+    "vue-async-computed": "^3.8.2",
     "vue-clickaway": "^2.1.0",
     "vue-notifyjs": "^0.3.0",
     "vue-router": "^3.0.1"

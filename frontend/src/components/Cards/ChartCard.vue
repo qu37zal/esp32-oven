@@ -69,6 +69,12 @@ export default {
       }
     }
   },
+  watch: {
+    chartData: function (data) {
+      document.getElementById(this.chartId).__chartist__.update(data);
+      console.log("updated: ", data);
+    }
+  },
   data() {
     return {
       chartId: "no-id"
@@ -80,6 +86,7 @@ export default {
      */
     initChart(Chartist) {
       const chartIdQuery = `#${this.chartId}`;
+      console.log("initChart: ", this.chartData);
       Chartist[this.chartType](
         chartIdQuery,
         this.chartData,

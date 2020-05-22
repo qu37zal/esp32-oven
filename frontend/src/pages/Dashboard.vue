@@ -25,7 +25,7 @@
       <div class="col-12">
         <chart-card title="Probe Data"
         sub-title="Last 24h"
-        :chart-data="samples"
+        :chart-data="asyncChartData"
         :chart-options="usersChart.options">
         <span slot="footer">
           <i class="ti-reload"></i> Updated 3 minutes ago
@@ -80,6 +80,13 @@ import axios from 'axios';
 import moment from 'moment';
 
 export default {
+  asyncComputed: {
+    async asyncChartData() {
+      var data = await this.getChartData();
+      console.log("Data: ", data);
+      return data;
+    }
+  },
   components: {
     StatsCard,
     ChartCard
@@ -88,78 +95,85 @@ export default {
   * Chart data used to render stats, charts. Should be replaced with server data
   */
   created() {
-    axios.get(`http://localhost:8080/data`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        // process data into bins
+    // async / await version (created() becomes async created())
+    //
+    // try {
+    //   const response = await axios.get(`http://jsonplaceholder.typicode.com/posts`)
+    //   this.posts = response.data
+    // } catch (e) {
+    //   this.errors.push(e)
+    // }
+  },
+  methods: {
+    getChartData: function () {
+      return new Promise((resolve, reject) => {
+        axios.get(`http://localhost:8080/data`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            // process data
 
-        var labels = [];
-        var series = [ [], [], [], [], [], [], [], [] ];
-        var bin = [];
-        var last = 0;
-        var sum = [];
-        sum[0]=0.0;
-        sum[1]=0.0;
-        sum[2]=0.0;
-        sum[3]=0.0;
-        sum[4]=0.0;
-        sum[5]=0.0;
-        sum[6]=0.0;
-        sum[7]=0.0;
-        var count = 0;
-        response.data.forEach(el => {
-          // console.log(el)
-          if ((el.epoch - last) > 600) { // 10 minutes per bin
-            // average bin
-            series[0].push(sum[0]/count);
-            series[1].push(sum[1]/count);
-            series[2].push(sum[2]/count);
-            series[3].push(sum[3]/count);
-            series[4].push(sum[4]/count);
-            series[5].push(sum[5]/count);
-            series[6].push(sum[6]/count);
-            series[7].push(sum[7]/count);
-            sum = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
-            count = 0;
-            last = el.epoch;
-            var bindate = new Date(el.epoch*1000);
-            console.log(moment(bindate).format('h:mm'));
-            labels.push(moment(bindate).format('h:mm'));
-          } else {
-            sum[0]+=el.t0;
-            sum[1]+=el.t1;
-            sum[2]+=el.t2;
-            sum[3]+=el.t3;
-            sum[4]+=el.t4;
-            sum[5]+=el.t5;
-            sum[6]+=el.t6;
-            sum[7]+=el.t7;
-            count++;
-          }
+            var labels = [];
+            var series = [[],[],[],[],[],[],[],[]];
+            var bin = [];
+            var last = 0;
+            var sum = [];
+
+            sum[0]=0.0;
+            sum[1]=0.0;
+            sum[2]=0.0;
+            sum[3]=0.0;
+            sum[4]=0.0;
+            sum[5]=0.0;
+            sum[6]=0.0;
+            sum[7]=0.0;
+            var count = 0.0;
+            for (var i = 0, len = response.data.length; i < len; i++) {
+              // console.log(el)
+
+              if ((response.data[i].epoch - last) > 60*15) { // 10 minutes per bin
+                // average bin
+
+                series[0].push((sum[0]/count>0)?sum[0]/count:null);
+                series[1].push((sum[1]/count>0)?sum[1]/count:null);
+                series[2].push((sum[2]/count>0)?sum[2]/count:null);
+                series[3].push((sum[3]/count>0)?sum[3]/count:null);
+                series[4].push((sum[4]/count>0)?sum[4]/count:null);
+                series[5].push((sum[5]/count>0)?sum[5]/count:null);
+                series[6].push((sum[6]/count>0)?sum[6]/count:null);
+                series[7].push((sum[7]/count>0)?sum[7]/count:null);
+                sum = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+                count = 0;
+                last = response.data[i].epoch;
+                var bindate = new Date(response.data[i].epoch*1000);
+                // console.log(moment(bindate).format('h:mm'));
+                labels.push(moment(bindate).format('h:mm'));
+              } else {
+                sum[0]+=parseFloat(response.data[i].t0);
+                sum[1]+=parseFloat(response.data[i].t1);
+                sum[2]+=parseFloat(response.data[i].t2);
+                sum[3]+=parseFloat(response.data[i].t3);
+                sum[4]+=parseFloat(response.data[i].t4);
+                sum[5]+=parseFloat(response.data[i].t5);
+                sum[6]+=parseFloat(response.data[i].t6);
+                sum[7]+=parseFloat(response.data[i].t7);
+                count++;
+              }
+            }
+
+            this.chartData = { labels: labels, series: series };
+            //console.log({ labels: labels, series: series });
+            resolve(this.chartData);
+          })
+          .catch(e => {
+            console.log(e);
+            reject(e);
+          })
         });
-        this.samples = { labels: labels, series: series };
-      })
-      .catch(e => {
-        console.log(e);
-      })
-
-      // async / await version (created() becomes async created())
-      //
-      // try {
-      //   const response = await axios.get(`http://jsonplaceholder.typicode.com/posts`)
-      //   this.posts = response.data
-      // } catch (e) {
-      //   this.errors.push(e)
-      // }
-    },
-    methods: {
-      createConversation: function (id) {
-        this.$dispatch('createConversation', id)
       }
     },
     data() {
       return {
-        samples: {},
+        chartData: {},
         statsCards: [
           {
             type: "success",
@@ -208,8 +222,8 @@ export default {
             ]
           },
           options: {
-            low: 0,
-            high: 350,
+            low: 60,
+            high: 85,
             showArea: false,
             height: "245px",
             axisX: {
