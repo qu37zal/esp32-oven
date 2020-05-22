@@ -30,7 +30,7 @@ app.get('/data', function(req, res) {
     if (err) throw err;
     var dbo = db.db("sdb");
       var epoch = Math.floor(new Date() / 1000);
-      dbo.collection("samples").find({ epoch: { $gt: epoch - 43200 } }).toArray(function(err, result) {
+      dbo.collection("samples").find({ epoch: { $gt: epoch - 60*60*6 } }).toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       res.json(result);

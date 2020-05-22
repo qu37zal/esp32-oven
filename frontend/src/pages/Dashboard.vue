@@ -31,10 +31,14 @@
           <i class="ti-reload"></i> Updated 3 minutes ago
         </span>
         <div slot="legend">
-          <i class="fa fa-circle text-info"></i> P01
-          <i class="fa fa-circle text-danger"></i> P02
-          <i class="fa fa-circle text-warning"></i> P03
-          <i class="fa fa-circle text-warning"></i> P04
+          <i class="fa fa-circle plot0"></i> P00
+          <i class="fa fa-circle plot1"></i> P01
+          <i class="fa fa-circle plot2"></i> P02
+          <i class="fa fa-circle plot3"></i> P03
+          <i class="fa fa-circle plot4"></i> P04
+          <i class="fa fa-circle plot5"></i> P05
+          <i class="fa fa-circle plot6"></i> P06
+          <i class="fa fa-circle plot7"></i> P07
         </div>
       </chart-card>
     </div>
@@ -128,25 +132,20 @@ export default {
             sum[7]=0.0;
             var count = 0.0;
             for (var i = 0, len = response.data.length; i < len; i++) {
-              // console.log(el)
 
-              if ((response.data[i].epoch - last) > 60*15) { // 10 minutes per bin
+              if ((response.data[i].epoch - last) > 60*5) { // 5 minutes per bin
                 // average bin
-
-                series[0].push((sum[0]/count>0)?sum[0]/count:null);
-                series[1].push((sum[1]/count>0)?sum[1]/count:null);
-                series[2].push((sum[2]/count>0)?sum[2]/count:null);
-                series[3].push((sum[3]/count>0)?sum[3]/count:null);
-                series[4].push((sum[4]/count>0)?sum[4]/count:null);
-                series[5].push((sum[5]/count>0)?sum[5]/count:null);
-                series[6].push((sum[6]/count>0)?sum[6]/count:null);
-                series[7].push((sum[7]/count>0)?sum[7]/count:null);
+                series[0].push( { x: new Date(response.data[i].epoch), y: (sum[0]/count>0)?sum[0]/count:null } );
+                series[1].push( { x: new Date(response.data[i].epoch), y: (sum[1]/count>0)?sum[1]/count:null } );
+                series[2].push( { x: new Date(response.data[i].epoch), y: (sum[2]/count>0)?sum[2]/count:null } );
+                series[3].push( { x: new Date(response.data[i].epoch), y: (sum[3]/count>0)?sum[3]/count:null } );
+                series[4].push( { x: new Date(response.data[i].epoch), y: (sum[4]/count>0)?sum[4]/count:null } );
+                series[5].push( { x: new Date(response.data[i].epoch), y: (sum[5]/count>0)?sum[5]/count:null } );
+                series[6].push( { x: new Date(response.data[i].epoch), y: (sum[6]/count>0)?sum[6]/count:null } );
+                series[7].push( { x: new Date(response.data[i].epoch), y: (sum[7]/count>0)?sum[7]/count:null } );
                 sum = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
                 count = 0;
                 last = response.data[i].epoch;
-                var bindate = new Date(response.data[i].epoch*1000);
-                // console.log(moment(bindate).format('h:mm'));
-                labels.push(moment(bindate).format('h:mm'));
               } else {
                 sum[0]+=parseFloat(response.data[i].t0);
                 sum[1]+=parseFloat(response.data[i].t1);
@@ -160,121 +159,143 @@ export default {
               }
             }
 
-            this.chartData = { labels: labels, series: series };
-            //console.log({ labels: labels, series: series });
-            resolve(this.chartData);
-          })
-          .catch(e => {
-            console.log(e);
-            reject(e);
-          })
-        });
-      }
-    },
-    data() {
-      return {
-        chartData: {},
-        statsCards: [
-          {
-            type: "success",
-            icon: "ti-dashboard",
-            title: "P00 (Chamber)",
-            value: "215.12 °F",
-            footerText: "Updated now",
-            footerIcon: "ti-reload"
-          },
-          {
-            type: "success",
-            icon: "ti-timer",
-            title: "Cook Timer",
-            value: "23h42m",
-            footerText: "Last day",
-            footerIcon: "ti-calendar",
-            footerButton: "Reset"
-          },
-          {
-            type: "danger",
-            icon: "ti-pulse",
-            title: "Errors",
-            value: "23",
-            footerText: "In the last hour",
-            footerIcon: "ti-timer",
-            footerButton: "Reset"
-          }
-        ],
-        usersChart: {
-          data: {
-            labels: [
-              "9:00AM",
-              "12:00AM",
-              "3:00PM",
-              "6:00PM",
-              "9:00PM",
-              "12:00PM",
-              "3:00AM",
-              "6:00AM"
-            ],
-            series: [
-              [110, 135, 182, 197, 203, 215, 216, 215, 214],
-              [70, 72, 90, 162, 194, 126, 198, 195, 152],
-              [71, 78, 93, 140, 187, 135, 135, 142, 144],
-              [45, 48, 67, 148, 190, 139, 137, 110, 110],
-            ]
-          },
-          options: {
-            low: 60,
-            high: 85,
-            showArea: false,
-            height: "245px",
-            axisX: {
-              showGrid: false
-            },
-            lineSmooth: Chartist.Interpolation.simple({
-              divisor: 3
-            }),
-            showLine: true,
-            showPoint: false
-          }
-        },
-        activityChart: {
-          data: {
-            labels: [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "Mai",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec"
-            ],
-            series: [
-              [542, 543, 520, 680, 653, 753, 326, 434, 568, 610, 756, 895],
-              [230, 293, 380, 480, 503, 553, 600, 664, 698, 710, 736, 795]
-            ]
-          },
-          options: {
-            seriesBarDistance: 10,
-            axisX: {
-              showGrid: false
-            },
-            height: "245px"
-          }
-        },
-        preferencesChart: {
-          data: {
-            labels: ["62%", "32%", "6%"],
-            series: [62, 32, 6]
-          },
-          options: {}
+            this.chartData = { series: series };
+            console.log({ labels: labels, series:
+              [
+                { name: 'series-a', data: series[0] },
+                { name: 'series-b', data: series[1] },
+                { name: 'series-c', data: series[2] },
+                { name: 'series-d', data: series[3] },
+                { name: 'series-e', data: series[4] },
+                { name: 'series-f', data: series[5] },
+                { name: 'series-g', data: series[6] },
+                { name: 'series-h', data: series[7] },
+              ]});
+
+              console.log(JSON.stringify(this.chartData));
+
+              resolve(this.chartData);
+            })
+            .catch(e => {
+              console.log(e);
+              reject(e);
+            })
+          });
         }
-      };
+      },
+      data() {
+        return {
+          chartData: {},
+          statsCards: [
+            {
+              type: "success",
+              icon: "ti-dashboard",
+              title: "P00 (Chamber)",
+              value: "215.12 °F",
+              footerText: "Updated now",
+              footerIcon: "ti-reload"
+            },
+            {
+              type: "success",
+              icon: "ti-timer",
+              title: "Cook Timer",
+              value: "23h42m",
+              footerText: "Last day",
+              footerIcon: "ti-calendar",
+              footerButton: "Reset"
+            },
+            {
+              type: "danger",
+              icon: "ti-pulse",
+              title: "Errors",
+              value: "23",
+              footerText: "In the last hour",
+              footerIcon: "ti-timer",
+              footerButton: "Reset"
+            }
+          ],
+          usersChart: {
+            options: {
+              low: 60,
+              high: 100,
+              showArea: false,
+              height: "245px",
+              axisX: {
+                type: Chartist.FixedScaleAxis,
+                divisor: 10,
+                labelInterpolationFnc: function(value) {
+                  return moment(value*1000).format('h:mm A');
+                }
+              },
+              showLine: true,
+              showPoint: false
+            }
+          },
+          activityChart: {
+            data: {
+              labels: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "Mai",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+              ],
+              series: [
+                [542, 543, 520, 680, 653, 753, 326, 434, 568, 610, 756, 895],
+                [230, 293, 380, 480, 503, 553, 600, 664, 698, 710, 736, 795]
+              ]
+            },
+            options: {
+              seriesBarDistance: 10,
+              axisX: {
+                showGrid: false
+              },
+              height: "245px"
+            }
+          },
+          preferencesChart: {
+            data: {
+              labels: ["62%", "32%", "6%"],
+              series: [62, 32, 6]
+            },
+            options: {}
+          }
+        };
+      }
+    };
+    </script>
+    <style>
+
+    .plot0 {
+      color: #FF0000;
     }
-  };
-  </script>
-  <style>
-  </style>
+    .plot1 {
+      color: #FFA500;
+    }
+    .plot2 {
+      color: #EEEE00;
+    }
+    .plot3 {
+      color: #00EE00;
+    }
+    .plot4 {
+      color: #0000FF;
+    }
+    .plot5 {
+      color: #A0A0FF;
+    }
+    .plot6 {
+      color: #EE22EE;
+    }
+    .plot7 {
+      color: #9400D3;
+    }
+
+    </style>

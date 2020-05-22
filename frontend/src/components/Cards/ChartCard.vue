@@ -117,4 +117,46 @@ export default {
 };
 </script>
 <style>
+
+.ct-series-a .ct-line {
+  stroke: #FF0000 !important;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-b .ct-line {
+  stroke: #FFA500;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-c .ct-line {
+  stroke: #EEEE00;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-d .ct-line {
+  stroke: #00EE00;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-e .ct-line {
+  stroke: #0000FF;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-f .ct-line {
+  stroke: #A0A0FF;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-g .ct-line {
+  stroke: #EE22EE;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+.ct-series-h .ct-line {
+  stroke: #9400D3;
+  stroke-width: 3px;
+  /* stroke-dasharray: 10px 20px; */
+}
+
 </style>
