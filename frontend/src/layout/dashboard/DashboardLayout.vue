@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <side-bar>
+    <!-- side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel"/>
         <sidebar-link to="/stats" name="User Profile" icon="ti-user"/>
@@ -35,7 +35,7 @@
         </li>
         <li class="divider"></li>
       </mobile-menu>
-    </side-bar>
+    </side-bar -->
     <div class="main-panel">
       <top-navbar></top-navbar>
 

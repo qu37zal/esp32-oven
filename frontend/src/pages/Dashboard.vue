@@ -13,7 +13,7 @@
             {{stats.value}}
           </div>
           <div class="stats row" slot="footer">
-            <div class="col-auto mr-auto"><i :class="stats.footerIcon"></i> {{stats.footerText}}</div><div class="col-auto" v-if="stats.footerButton"> {{stats.footerButton}}</div>
+            <div style="cursor: pointer;" v-on:click="getChartData()" class="col-auto mr-auto"><i :class="stats.footerIcon"></i> {{stats.footerText}}</div><div class="col-auto" v-if="stats.footerButton"> {{stats.footerButton}}</div>
           </div>
         </stats-card>
       </div>
@@ -21,7 +21,6 @@
 
     <!--Charts-->
     <div class="row">
-
       <div class="col-12">
         <chart-card title="Probe Data"
         sub-title="Last 24h"
@@ -98,7 +97,7 @@ export default {
   /**
   * Chart data used to render stats, charts. Should be replaced with server data
   */
-  created() {
+  mounted() {
     // async / await version (created() becomes async created())
     //
     // try {
@@ -107,6 +106,12 @@ export default {
     // } catch (e) {
     //   this.errors.push(e)
     // }
+
+    // set a 1 minute timeout
+    // var _this = this;
+    var scope = this;
+    //this.timerID = setInterval(this.getChartData(), 60 * 1000);
+
   },
   methods: {
     getChartData: function () {
@@ -133,7 +138,7 @@ export default {
             var count = 0.0;
             for (var i = 0, len = response.data.length; i < len; i++) {
 
-              if ((response.data[i].epoch - last) > 60*5) { // 5 minutes per bin
+              if ((response.data[i].epoch - last) > 60*2) { // 5 minutes per bin
                 // average bin
                 series[0].push( { x: new Date(response.data[i].epoch), y: (sum[0]/count>0)?sum[0]/count:null } );
                 series[1].push( { x: new Date(response.data[i].epoch), y: (sum[1]/count>0)?sum[1]/count:null } );
@@ -159,7 +164,19 @@ export default {
               }
             }
 
+            // TODO: add method to resolve cards by name
+            // probe cards
+            this.statsCards[0].value = parseFloat(response.data[response.data.length-1].t0).toFixed(2) + " °F";
+            this.statsCards[1].value = parseFloat(response.data[response.data.length-1].t1).toFixed(2) + " °F";
+
+            // duration card
+            var end = moment(response.data[response.data.length-1].epoch*1000);
+            var start = moment(response.data[0].epoch*1000);
+            this.statsCards[2].value = moment(end.diff(start)).format("h[h] m[m]");
+
             this.chartData = { series: series };
+            this.refreshed = new Date();
+
             console.log({ labels: labels, series:
               [
                 { name: 'series-a', data: series[0] },
@@ -171,9 +188,7 @@ export default {
                 { name: 'series-g', data: series[6] },
                 { name: 'series-h', data: series[7] },
               ]});
-
-              console.log(JSON.stringify(this.chartData));
-
+              // console.log(JSON.stringify(this.chartData));
               resolve(this.chartData);
             })
             .catch(e => {
@@ -185,13 +200,22 @@ export default {
       },
       data() {
         return {
-          chartData: {},
+          chartData: [],
+          probeCurrent: { t0:0 },
           statsCards: [
             {
               type: "success",
               icon: "ti-dashboard",
-              title: "P00 (Chamber)",
-              value: "215.12 °F",
+              title: "P00",
+              value: 0,
+              footerText: "Updated now",
+              footerIcon: "ti-reload"
+            },
+            {
+              type: "success",
+              icon: "ti-dashboard",
+              title: "P01",
+              value: 0,
               footerText: "Updated now",
               footerIcon: "ti-reload"
             },
@@ -205,10 +229,10 @@ export default {
               footerButton: "Reset"
             },
             {
-              type: "danger",
-              icon: "ti-pulse",
-              title: "Errors",
-              value: "23",
+              type: "success",
+              icon: "ti-alert",
+              title: "Notifications",
+              value: "0",
               footerText: "In the last hour",
               footerIcon: "ti-timer",
               footerButton: "Reset"
@@ -216,8 +240,8 @@ export default {
           ],
           usersChart: {
             options: {
-              low: 60,
-              high: 100,
+              low: 20,
+              high: 220,
               showArea: false,
               height: "245px",
               axisX: {

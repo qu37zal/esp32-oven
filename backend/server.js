@@ -25,12 +25,41 @@ app.post('/update', (req, res) => {
     res.sendStatus(200);
 });
 
+app.post('/log', (req, res) => {
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("sdb");
+      req.body.epoch = Math.floor(new Date() / 1000);
+      dbo.collection("log").insertOne(req.body, function(err, res) {
+        if (err) throw err;
+        console.log(req.body);
+        db.close();
+      });
+    });
+
+    res.sendStatus(200);
+});
+
 app.get('/data', function(req, res) {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("sdb");
       var epoch = Math.floor(new Date() / 1000);
-      dbo.collection("samples").find({ epoch: { $gt: epoch - 60*60*6 } }).toArray(function(err, result) {
+      dbo.collection("samples").find({ epoch: { $gt: epoch - 100*60*60*6 } }).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      res.json(result);
+      db.close();
+    });
+  });
+});
+
+app.get('/log', function(req, res) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("sdb");
+      var epoch = Math.floor(new Date() / 1000);
+      dbo.collection("log").find({ epoch: { $gt: epoch - 100*60*60*6 } }).toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       res.json(result);

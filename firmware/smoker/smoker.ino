@@ -1,5 +1,5 @@
-#include "arduino_secrets.h"
-#include <Arduino_JSON.h>
+// #include "arduino_secrets.h"
+// #include <Arduino_JSON.h>
 #include <math.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -11,10 +11,10 @@
 #define MUX_B D2
 #define MUX_C D1
 
-const char* ssid = "AIONEX-2.4";
-const char* password = "aionex2017";
+const char* ssid = "dd-wrt";
+const char* password = "ceezmega01";
 
-const char* serverName = "http://10.1.10.166:8080/update";
+const char* serverName = "http://192.168.2.145:8080/update";
 
 
 #include <LiquidCrystal_I2C.h>
